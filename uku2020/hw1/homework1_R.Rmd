@@ -10,7 +10,7 @@ str_vec <- c("1.19", "6.24", "1.68", "3.56", "7.16", "7.43", "4.44", "0.4", "4.4
 str_vec[1] + str_vec[2]
 ```
 
-## Завдання 1. Перетворити кожен елемент `str_vec` в число, "double", за допомогою цикла `for`
+## Завдання 1. Перетворити кожен елемент `str_vec` в число, "double", за допомогою цикла `for`. В результаті має вийти вектор не з рядками, а з числами: `c(1.19, 6.24, 1.68 …)`
 Як???
 1. Створити новий пустий вектор, у якому будемо зберігати перетворені числа `double_vec <- c()`
 2. Пройти по всім елементам вектора ´`str_vec` за допомогою *циклу* `for (e in vvv) { … }`
@@ -20,19 +20,52 @@ str_vec[1] + str_vec[2]
 ```{r}
 # do it here
 
-```
 
+double_vec <- c()
+for (x in str_vec) {
+  number <- as.double(x) + 1
+  double_vec <- c(double_vec, number)
+}
+double_vec
+
+calculations_vec <- c()
+for (x in str_vec) {
+  num <- as.double(x)
+  x1 <- sqrt(num)
+  x2 <- (num) * 2
+  calculations_vec <- c(calculations_vec, x1, x2, x1 + x2)
+}
+calculations_vec
 
 ## Завдання 2. З векторизацією простіше: перетворіть `str_vec` на числовий вектор в 1 рядок коду
 Застосуйте перетворюючу фенкцію `as.…` до всього вектора
 ```{r}
-
+___  ___
+|  \/  |
+ \    /
+  \  /
+   \/
+double_ves <- as.double(str_vec)
 ```
 
 ## Завдання 3. Перевірте, що тепер з елементами перетвореного вектора можна здійснювати арифметичні операції
 Знайдіть суму, середнє, медіану, стандартне відхилення (standart deviation) вектора
 ```{r}
+vec_sum <- 0
+vec_count <- 0
 
+for (num in double_vec) {
+  vec_sum <- vec_sum + num
+  vec_count <- vec_count + 1
+}
+
+vec_avg <- vec_sum / vec_count
+vec_mean <- mean(double_vec)
+vec_sd <- sd(double_vec)
+sprintf("sum: %f", vec_sum)
+sprintf("avg: %f", vec_avg)
+sprintf("mean: %f", vec_mean)
+sprintf("standard derivation: %f", vec_sd)
 ```
 
 ### Завдання 4
@@ -41,7 +74,7 @@ str_vec[1] + str_vec[2]
 library(tidyverse)    # встановіть пакет, якщо бачите помилку, що його нема: install.packages("tidyverse")
 
 url <- "https://disp.ua.energy/datagov/dg_year.csv"
-df <- read.csv(url(url))    # to read data from web 
+df <- read.csv(url(url), fileEncoding="UTF-8")    # to read data from web 
 
 df$Дата <- as.POSIXct(df$Дата, format = "%d.%m.%Y %H:%M:%S")    # date column as date, not as character
 head(df)
@@ -50,7 +83,20 @@ head(df)
 
 ### 1. Знайдіть середнє, медіану, стандартне відхилення (standart deviation) споживання за годину (колонка "Споживання")
 ```{r}
+df_consumptions <- as.double(df$Споживання)
+consumption_sum <- sum(df_consumptions)
+consumption_count <- nrow(df)
+result <- consumption_sum / consumption_count
+result
+
+result_mean <- mean(df_consumptions)
+result_mean
+
+result_sd <- sd(df_consumptions)
+result_sd
 
 ```
+
+
 
 

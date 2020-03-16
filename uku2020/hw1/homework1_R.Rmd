@@ -23,7 +23,7 @@ str_vec[1] + str_vec[2]
 
 double_vec <- c()
 for (x in str_vec) {
-  number <- as.double(x) + 1
+  number <- as.double(x) 
   double_vec <- c(double_vec, number)
 }
 double_vec

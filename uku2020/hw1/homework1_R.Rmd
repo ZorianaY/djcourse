@@ -84,6 +84,9 @@ result
 result_mean <- mean(df_consumptions)
 result_mean
 
+result_median <- median(df_consumptions)
+result_median
+
 result_sd <- sd(df_consumptions)
 result_sd
 

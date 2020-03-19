@@ -56,6 +56,7 @@ for (num in double_vec) {
 
 vec_avg <- vec_sum / vec_count
 vec_mean <- mean(double_vec)
+vec_median <- median(double_vec)
 vec_sd <- sd(double_vec)
 
 ```

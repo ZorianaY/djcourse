@@ -11,7 +11,7 @@ library("progress")
 
 link <-"https://voxukraine.org/uk/category/temi/ekonomika/"
 
-economicnews <- read_html(link)
+economicnews <- read_html(link)    # nr: це перший, пробний url
 
 titles <- economicnews %>%
   html_nodes('.entry-title') %>%
@@ -58,7 +58,7 @@ for(page in 1:npages) {
   
   current_link <- str_c(link, page)
   
-  current_titles <- economicnews %>%
+  current_titles <- economicnews %>%    # nr: тут ви сформували працильний лінк, але берете дані зі старого html на 14 рядку. Забули прочитати html за лінком 'current_link'
     html_nodes('.entry-title') %>%
     html_text()
   
@@ -104,4 +104,13 @@ data.frame(title = titles,
 
 df <- read.csv(file_name)
 print(df)
+```
+
+
+```{r}
+# nr: перевірка, чи рядки унікальні
+
+df %>%
+  group_by(duplicated(.)) %>%
+  summarise(n())
 ```

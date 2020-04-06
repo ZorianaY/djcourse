@@ -1,0 +1,107 @@
+# My homework 4
+
+install.packages("rvest")
+install.packages("tidyverse")
+install.packages("progress")
+
+```{r}
+library("rvest")
+library("tidyverse")
+library("progress")
+
+link <-"https://voxukraine.org/uk/category/temi/ekonomika/"
+
+economicnews <- read_html(link)
+
+titles <- economicnews %>%
+  html_nodes('.entry-title') %>%
+  html_text()
+print(titles)
+
+urls <- economicnews %>%
+  html_nodes('.entry-title > a') %>%
+  html_attr('href')
+print(urls)
+
+authors <- economicnews %>%
+  html_nodes('.author-bold') %>%
+  html_text() %>% 
+  gsub("\n", "", .)
+print(authors)
+
+dates <- economicnews %>%
+   html_nodes('.data-simple-article') %>%
+   html_text() %>%
+  gsub(" ","", .)
+ print(dates)
+
+image <- economicnews %>%
+  html_nodes('.thumbnail > a > img') %>%
+  html_attr('src')
+print(image)
+
+titles <- c()
+urls <- c()
+authors <- c()
+dates <- c()
+image <- c()
+
+npages <- 33
+link <- "https://voxukraine.org/uk/category/temi/ekonomika/page/"
+
+pb <- progress_bar$new(
+format = "  downloading [:bar] :percent in :elapsed ",
+total = npages, clear = FALSE, width= 60)
+
+for(page in 1:npages) {
+  print(str_c("Scrapping page", page))
+  
+  current_link <- str_c(link, page)
+  
+  current_titles <- economicnews %>%
+    html_nodes('.entry-title') %>%
+    html_text()
+  
+  current_urls <- economicnews %>%
+    html_nodes('.entry-title > a') %>%
+    html_attr('href')
+  
+  current_authors <- economicnews %>%
+    html_nodes('.author-bold') %>%
+    html_text() %>% 
+    gsub("\n", "", .)
+  
+  current_dates <- economicnews %>%
+    html_nodes('.data-simple-article') %>%
+    html_text() %>%
+    gsub(" ","", .)
+  
+  current_image <- economicnews %>%
+    html_nodes('.thumbnail > a > img') %>%
+    html_attr('src')
+  
+  print(current_titles)
+  
+  titles <- c(titles, current_titles)
+  urls <- c(urls, current_urls)
+  authors <- c(authors, current_authors)
+  dates <- c(dates, current_dates)
+  image <- c(image, current_image)
+
+  Sys.sleep(3)
+  pb$tick(1)
+
+}
+
+file_name <- "vox_ukraine_economic.csv"
+ 
+data.frame(title = titles,
+           link = urls,
+           author = authors,
+           date = dates,
+           picture = image) %>%
+           write.csv(file_name, row.names = FALSE)
+
+df <- read.csv(file_name)
+print(df)
+```

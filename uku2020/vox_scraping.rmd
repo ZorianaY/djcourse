@@ -1,7 +1,5 @@
 # My homework 4
 
-# My homework 4
-
 install.packages("rvest")
 install.packages("tidyverse")
 install.packages("progress")
@@ -48,7 +46,7 @@ authors <- c()
 dates <- c()
 image <- c()
 
-npages <- 3
+npages <- 33
 link <- "https://voxukraine.org/uk/category/temi/ekonomika/page/"
 
 

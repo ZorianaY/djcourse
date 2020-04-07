@@ -1,5 +1,7 @@
 # My homework 4
 
+# My homework 4
+
 install.packages("rvest")
 install.packages("tidyverse")
 install.packages("progress")
@@ -11,7 +13,7 @@ library("progress")
 
 link <-"https://voxukraine.org/uk/category/temi/ekonomika/"
 
-economicnews <- read_html(link)    # nr: це перший, пробний url
+economicnews <- read_html(link)
 
 titles <- economicnews %>%
   html_nodes('.entry-title') %>%
@@ -46,8 +48,10 @@ authors <- c()
 dates <- c()
 image <- c()
 
-npages <- 33
+npages <- 3
 link <- "https://voxukraine.org/uk/category/temi/ekonomika/page/"
+
+
 
 pb <- progress_bar$new(
 format = "  downloading [:bar] :percent in :elapsed ",
@@ -57,26 +61,28 @@ for(page in 1:npages) {
   print(str_c("Scrapping page", page))
   
   current_link <- str_c(link, page)
+  current_economicnews <- read_html(current_link)
+ 
   
-  current_titles <- economicnews %>%    # nr: тут ви сформували працильний лінк, але берете дані зі старого html на 14 рядку. Забули прочитати html за лінком 'current_link'
+  current_titles <- current_economicnews %>%
     html_nodes('.entry-title') %>%
     html_text()
   
-  current_urls <- economicnews %>%
+  current_urls <- current_economicnews %>%
     html_nodes('.entry-title > a') %>%
     html_attr('href')
   
-  current_authors <- economicnews %>%
+  current_authors <- current_economicnews %>%
     html_nodes('.author-bold') %>%
     html_text() %>% 
     gsub("\n", "", .)
   
-  current_dates <- economicnews %>%
+  current_dates <- current_economicnews %>%
     html_nodes('.data-simple-article') %>%
     html_text() %>%
     gsub(" ","", .)
   
-  current_image <- economicnews %>%
+  current_image <- current_economicnews %>%
     html_nodes('.thumbnail > a > img') %>%
     html_attr('src')
   
@@ -105,8 +111,6 @@ data.frame(title = titles,
 df <- read.csv(file_name)
 print(df)
 ```
-
-
 ```{r}
 # nr: перевірка, чи рядки унікальні
 

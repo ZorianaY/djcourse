@@ -46,10 +46,8 @@ authors <- c()
 dates <- c()
 image <- c()
 
-npages <- 33
+npages <- 3
 link <- "https://voxukraine.org/uk/category/temi/ekonomika/page/"
-
-
 
 pb <- progress_bar$new(
 format = "  downloading [:bar] :percent in :elapsed ",
@@ -65,6 +63,7 @@ for(page in 1:npages) {
   current_titles <- current_economicnews %>%
     html_nodes('.entry-title') %>%
     html_text()
+  
   
   current_urls <- current_economicnews %>%
     html_nodes('.entry-title > a') %>%
@@ -99,19 +98,14 @@ for(page in 1:npages) {
 
 file_name <- "vox_ukraine_economic.csv"
  
-data.frame(title = titles,
+unique(data.frame(title = titles,
            link = urls,
            author = authors,
            date = dates,
-           picture = image) %>%
-           write.csv(file_name, row.names = FALSE)
+           picture = image)) %>% write.csv(file_name, row.names = FALSE)
 
 df <- read.csv(file_name)
 print(df)
-```
-```{r}
-# nr: перевірка, чи рядки унікальні
-
 df %>%
   group_by(duplicated(.)) %>%
   summarise(n())
